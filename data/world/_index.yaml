@@ -6,7 +6,7 @@ conventions:
   equipment_id: "FAMILLE-LETTRE-NN, ex. POMPE-A-01 (un seul format partout)"
   nom_de_fichier: "<document_id>.<extension>"
   version: "vX.Y (AAAA-MM)"
-  marques: "Kelvor (pompes) et Airvex (compresseurs) sont des noms fictifs. Vérifier qu'ils ne correspondent à aucune marque réelle."
+  marques: "Pompall (pompes) et Compramex (compresseurs) sont des noms fictifs. Vérifier qu'ils ne correspondent à aucune marque réelle."
 
 familles:
   pompes: [POMPE-A-01, POMPE-B-01]
