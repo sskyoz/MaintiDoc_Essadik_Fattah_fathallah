@@ -1,0 +1,108 @@
+equipment_id: POMPE-A-01
+famille: pompes
+fabricant_fictif: Kelvor
+modele: HX-200
+description: "Pompe centrifuge monocellulaire horizontale pour eau claire"
+
+caracteristiques:
+  debit_nominal_m3_h: 120
+  hauteur_manometrique_m: 32
+  puissance_moteur_kw: 15
+  vitesse_tr_min: 2900
+  alimentation: "400 V triphasé 50 Hz"
+  pression_refoulement_nominale_bar: 3.2
+  fluide: "eau claire, 5 à 40 °C"
+  carter_palier:
+    huile: "ISO VG 46"
+    volume_l: 0.8
+
+panneau:
+  reference_photo: photo_panneau_pompe_a
+  afficheur: "Code d'alarme sur 3 caractères (ex. E41)"
+  boutons: [MARCHE, ARRET, ACQUIT]
+  voyants:
+    - {id: led_vert, couleur: vert, libelle: MARCHE, etat: fixe, signification: "Pompe en marche"}
+    - {id: led_orange, couleur: orange, libelle: ALERTE, etat: fixe, signification: "Alarme non critique : la pompe continue de tourner, lire le code sur l'afficheur"}
+    - {id: led_rouge, couleur: rouge, libelle: DEFAUT, etat: fixe, signification: "Arrêt de sécurité : la pompe est arrêtée, lire le code sur l'afficheur"}
+  reference_manuel: {document_id: manuel_pompe_a, page: 18, element_id: figure_18_2}
+
+alarmes:
+  - code: E15
+    signification: "Marche à sec"
+    seuil: "Courant moteur inférieur à 40 % du courant nominal pendant plus de 5 s, ou pression de refoulement inférieure à 0,3 bar"
+    voyant: rouge
+    gravite: arret
+    action: "Arrêt automatique. Vérifier l'ouverture de la vanne d'aspiration, amorcer la pompe (PROC-PA-01), puis acquitter."
+    reference: {document_id: manuel_pompe_a, page: 20, element_id: tableau_20_1}
+  - code: E22
+    signification: "Pression de refoulement basse"
+    seuil: "Pression de refoulement inférieure à 2,0 bar pendant plus de 10 s"
+    voyant: orange
+    gravite: alerte
+    action: "Vérifier la vanne de refoulement, le filtre d'aspiration et l'absence d'air dans le corps de pompe."
+    reference: {document_id: manuel_pompe_a, page: 20, element_id: tableau_20_1}
+  - code: E33
+    signification: "Vibration élevée"
+    seuil: "Vitesse de vibration supérieure à 4,5 mm/s RMS"
+    voyant: orange
+    gravite: alerte
+    action: "Contrôler l'alignement, le serrage des fixations et l'état des roulements."
+    reference: {document_id: manuel_pompe_a, page: 20, element_id: tableau_20_1}
+  - code: E41
+    signification: "Température de palier élevée"
+    seuil: "Température de palier supérieure ou égale à 85 °C (valeur de référence du manuel, p.20)"
+    seuil_fiche_alarmes: "80 °C (valeur erronée volontaire dans codes_alarme_pompe_a, p.2) : contradiction PIEGE-04"
+    voyant: orange
+    gravite: alerte
+    action: "Contrôler le niveau d'huile du carter de palier et le refroidissement. Si la température atteint 95 °C, l'alarme E42 arrête la pompe."
+    reference: {document_id: manuel_pompe_a, page: 20, element_id: tableau_20_1}
+  - code: E42
+    signification: "Température de palier critique"
+    seuil: "Température de palier supérieure ou égale à 95 °C"
+    voyant: rouge
+    gravite: arret
+    action: "Arrêt automatique. Laisser refroidir, rechercher la cause (huile, roulement), acquitter après correction."
+    reference: {document_id: manuel_pompe_a, page: 20, element_id: tableau_20_1}
+  - code: E57
+    signification: "Fuite de la garniture mécanique"
+    seuil: "Plus de 10 gouttes par minute au drain de la garniture"
+    voyant: orange
+    gravite: alerte
+    action: "Planifier le remplacement de la garniture mécanique ; surveiller la fuite."
+    reference: {document_id: manuel_pompe_a, page: 20, element_id: tableau_20_1}
+
+procedures:
+  - id: PROC-PA-01
+    document_id: proc_demarrage_pompe_a
+    titre: "Démarrage et arrêt de la pompe HX-200"
+    valeurs_cles:
+      - "Ouvrir complètement la vanne d'aspiration"
+      - "Amorcer le corps de pompe avant le démarrage"
+      - "Vanne de refoulement ouverte à un quart avant démarrage"
+      - "Pression de refoulement attendue après ouverture progressive : 3,2 bar"
+      - "Vérifier le sens de rotation (flèche sur le carter) à la première mise en service"
+  - id: PROC-PA-02
+    document_id_v1: proc_vidange_pompe_a_v1
+    document_id_v2: proc_vidange_pompe_a_v2
+    titre: "Vidange du carter de palier"
+    valeurs_cles:
+      - "Huile ISO VG 46, 0,8 L"
+      - "Consigner la pompe avant toute intervention"
+      - "Couple de serrage du bouchon de vidange : 18 N.m dans la v1 (2023-06), 25 N.m dans la v2 (2025-03)"
+
+documents:
+  - {document_id: manuel_pompe_a, type: manuel, titre: "Manuel d'utilisation pompe centrifuge HX-200", version: "v2.0 (2025-01)", nb_pages: 24, langue: fr, format: pdf_texte, elements_visuels: "fig 6.1 p.6 (vue générale) ; fig 18.2 p.18 (panneau de commande) ; tableau codes p.20", groupes: [techniciens_pompes, responsables], usage_test: contradictoire}
+  - {document_id: codes_alarme_pompe_a, type: codes_alarme, titre: "Codes d'alarme pompe HX-200", version: "v1.1 (2025-02)", nb_pages: 4, langue: fr, format: pdf_texte, elements_visuels: "tableau codes p.2", groupes: [techniciens_pompes, responsables], usage_test: contradictoire}
+  - {document_id: fiche_securite_pompe_a, type: fiche_securite, titre: "Fiche de sécurité pompe HX-200", version: "v1.0 (2025-01)", nb_pages: 3, langue: fr, format: pdf_texte, elements_visuels: "tableau risques p.2", groupes: [techniciens_pompes, responsables], usage_test: normal}
+  - {document_id: schema_pompe_a, type: schema, titre: "Schémas hydraulique et capteurs pompe HX-200", version: "v1.0 (2025-01)", nb_pages: 2, langue: fr, format: pdf_texte, elements_visuels: "fig 1 p.1 (circuit hydraulique) ; fig 2 p.2 (implantation des capteurs)", groupes: [techniciens_pompes, responsables], usage_test: normal}
+  - {document_id: photo_panneau_pompe_a, type: photo, titre: "Panneau de commande pompe HX-200", version: "2026-11", nb_pages: 1, langue: fr, format: image, elements_visuels: "voyants vert, orange, rouge ; afficheur", groupes: [techniciens_pompes, responsables], usage_test: ambigu}
+  - {document_id: historique_pompe_a, type: historique, titre: "Historique des interventions POMPE-A-01", version: "v1.0 (2026-10)", nb_pages: 5, langue: fr, format: pdf_texte, elements_visuels: "tableau interventions p.2", groupes: [techniciens_pompes, responsables], usage_test: normal}
+  - {document_id: proc_demarrage_pompe_a, type: procedure, titre: "Procédure de démarrage et d'arrêt pompe HX-200", version: "v1.0 (2025-01)", nb_pages: 5, langue: fr, format: pdf_texte, elements_visuels: "schéma vannes p.2", groupes: [techniciens_pompes, responsables], usage_test: normal}
+  - {document_id: proc_vidange_pompe_a_v1, type: procedure, titre: "Procédure de vidange du carter de palier pompe HX-200 (v1)", version: "v1 (2023-06)", nb_pages: 4, langue: fr, format: pdf_scanne, elements_visuels: "schéma carter p.2", groupes: [techniciens_pompes, responsables], usage_test: contradictoire}
+  - {document_id: proc_vidange_pompe_a_v2, type: procedure, titre: "Procédure de vidange du carter de palier pompe HX-200 (v2)", version: "v2 (2025-03)", nb_pages: 4, langue: fr, format: pdf_texte, elements_visuels: "schéma carter p.2", groupes: [techniciens_pompes, responsables], usage_test: contradictoire}
+
+historique_interventions:
+  - {ticket: TCK-2025-0112, date: "2025-02-14", type: preventive, resume: "Graissage des roulements et vidange du carter de palier selon la procédure v1 (couple bouchon 18 N.m)", statut: clos}
+  - {ticket: TCK-2025-0231, date: "2025-08-12", type: alarme, code: E41, resume: "Température de palier relevée à 87 °C, niveau d'huile bas. Complément d'huile, surveillance pendant 48 h", statut: clos}
+  - {ticket: TCK-2026-0044, date: "2026-01-20", type: alarme, code: E57, resume: "Fuite de la garniture mécanique constatée, garniture remplacée", statut: clos}
+  - {ticket: TCK-2026-0187, date: "2026-09-30", type: alarme, code: E33, resume: "Vibration intermittente au-dessus de 4,5 mm/s, contrôle d'alignement planifié", statut: ouvert}

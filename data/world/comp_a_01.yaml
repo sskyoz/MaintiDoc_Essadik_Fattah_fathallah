@@ -1,0 +1,94 @@
+equipment_id: COMP-A-01
+famille: compresseurs
+fabricant_fictif: Airvex
+modele: VS-55
+description: "Compresseur d'air à vis, lubrifié par injection d'huile"
+
+caracteristiques:
+  puissance_moteur_kw: 55
+  pression_service_bar: 8
+  plage_regulation_bar: "7,5 à 8,5"
+  debit_m3_min: 9.5
+  alimentation: "400 V triphasé 50 Hz"
+  huile: "synthétique ISO VG 46"
+  volume_huile_l: 25
+  temperature_sortie_normale_c: 85
+
+panneau:
+  reference_photo: photo_panneau_comp_a
+  afficheur: "Code d'alarme sur 3 caractères (ex. E18)"
+  boutons: [MARCHE, ARRET, ACQUIT]
+  voyants:
+    - {id: led_vert, couleur: vert, libelle: MARCHE, etat: fixe, signification: "Compresseur en marche"}
+    - {id: led_orange, couleur: orange, libelle: ALERTE, etat: fixe, signification: "Alarme non critique : le compresseur continue de tourner, lire le code sur l'afficheur"}
+    - {id: led_rouge, couleur: rouge, libelle: DEFAUT, etat: fixe, signification: "Arrêt de sécurité : le compresseur est arrêté, lire le code sur l'afficheur"}
+  reference_manuel: {document_id: manuel_comp_a, page: 16, element_id: figure_16_1}
+
+alarmes:
+  - code: E18
+    signification: "Température de sortie élevée"
+    seuil: "Température de sortie du bloc vis supérieure ou égale à 100 °C"
+    voyant: orange
+    gravite: alerte
+    action: "Contrôler le niveau d'huile, le refroidisseur et la ventilation du local. À 110 °C, l'alarme E19 arrête la machine."
+    reference: {document_id: manuel_comp_a, page: 18, element_id: tableau_18_1}
+  - code: E19
+    signification: "Température de sortie critique"
+    seuil: "Température de sortie du bloc vis supérieure ou égale à 110 °C"
+    voyant: rouge
+    gravite: arret
+    action: "Arrêt automatique. Laisser refroidir, rechercher la cause, acquitter après correction."
+    reference: {document_id: manuel_comp_a, page: 18, element_id: tableau_18_1}
+  - code: E41
+    signification: "Pression d'huile basse"
+    seuil: "Pression d'huile inférieure à 1,5 bar (sens différent de E41 sur les pompes, PIEGE-02)"
+    voyant: rouge
+    gravite: arret
+    action: "Arrêt automatique. Vérifier le niveau d'huile et le filtre à huile avant tout redémarrage."
+    reference: {document_id: manuel_comp_a, page: 18, element_id: tableau_18_1}
+  - code: E52
+    signification: "Filtre à air colmaté"
+    seuil: "Perte de charge du filtre à air supérieure à 0,05 bar"
+    voyant: orange
+    gravite: alerte
+    action: "Remplacer le filtre à air (PROC-CA-02)."
+    reference: {document_id: manuel_comp_a, page: 18, element_id: tableau_18_1}
+  - code: E63
+    signification: "Séparateur d'huile colmaté"
+    seuil: "Perte de charge du séparateur supérieure à 0,8 bar"
+    voyant: orange
+    gravite: alerte
+    action: "Planifier le remplacement de la cartouche du séparateur d'huile."
+    reference: {document_id: manuel_comp_a, page: 18, element_id: tableau_18_1}
+
+procedures:
+  - id: PROC-CA-01
+    document_id: proc_demarrage_comp_a
+    titre: "Démarrage et arrêt du compresseur VS-55"
+    valeurs_cles:
+      - "Vérifier le niveau d'huile au regard avant démarrage"
+      - "Ouvrir la vanne de départ réseau après la montée en pression"
+      - "Pression de service attendue : 8 bar"
+      - "Laisser tourner 2 min à vide avant l'arrêt pour refroidir le bloc vis"
+  - id: PROC-CA-02
+    document_id: proc_filtre_air_comp_a
+    titre: "Remplacement du filtre à air"
+    valeurs_cles:
+      - "Arrêter et consigner le compresseur, attendre la dépressurisation complète"
+      - "Couple des vis du couvercle de filtre : 8 N.m"
+      - "Remplacer le filtre quand la perte de charge dépasse 0,05 bar (alarme E52)"
+
+documents:
+  - {document_id: manuel_comp_a, type: manuel, titre: "Manuel d'utilisation compresseur à vis VS-55", version: "v2.1 (2025-02)", nb_pages: 26, langue: fr, format: pdf_texte, elements_visuels: "fig 5.1 p.5 (vue générale) ; fig 16.1 p.16 (panneau de commande) ; tableau codes p.18", groupes: [techniciens_compresseurs, responsables], usage_test: normal}
+  - {document_id: codes_alarme_comp_a, type: codes_alarme, titre: "Codes d'alarme compresseur VS-55", version: "v1.0 (2025-02)", nb_pages: 3, langue: fr, format: pdf_texte, elements_visuels: "tableau codes p.2", groupes: [techniciens_compresseurs, responsables], usage_test: ambigu}
+  - {document_id: fiche_securite_comp_a, type: fiche_securite, titre: "Fiche de sécurité compresseur VS-55", version: "v1.0 (2025-02)", nb_pages: 3, langue: fr, format: pdf_texte, elements_visuels: "tableau risques p.2", groupes: [techniciens_compresseurs, responsables], usage_test: normal}
+  - {document_id: schema_comp_a, type: schema, titre: "Schémas circuits air et huile compresseur VS-55", version: "v1.0 (2025-02)", nb_pages: 2, langue: fr, format: pdf_texte, elements_visuels: "fig 1 p.1 (circuit air et huile) ; fig 2 p.2 (implantation des capteurs)", groupes: [techniciens_compresseurs, responsables], usage_test: normal}
+  - {document_id: photo_panneau_comp_a, type: photo, titre: "Panneau de commande compresseur VS-55", version: "2026-11", nb_pages: 1, langue: fr, format: image, elements_visuels: "voyants vert, orange, rouge ; afficheur", groupes: [techniciens_compresseurs, responsables], usage_test: normal}
+  - {document_id: historique_comp_a, type: historique, titre: "Historique des interventions COMP-A-01", version: "v1.0 (2026-10)", nb_pages: 4, langue: fr, format: pdf_texte, elements_visuels: "tableau interventions p.2", groupes: [techniciens_compresseurs, responsables], usage_test: normal}
+  - {document_id: proc_demarrage_comp_a, type: procedure, titre: "Procédure de démarrage et d'arrêt compresseur VS-55", version: "v1.0 (2025-02)", nb_pages: 5, langue: fr, format: pdf_texte, elements_visuels: "schéma circuit p.2", groupes: [techniciens_compresseurs, responsables], usage_test: normal}
+  - {document_id: proc_filtre_air_comp_a, type: procedure, titre: "Procédure de remplacement du filtre à air compresseur VS-55", version: "v1.0 (2025-02)", nb_pages: 4, langue: fr, format: pdf_texte, elements_visuels: "schéma filtre p.2", groupes: [techniciens_compresseurs, responsables], usage_test: normal}
+
+historique_interventions:
+  - {ticket: TCK-2025-0090, date: "2025-03-10", type: preventive, resume: "Vidange d'huile et remplacement du filtre à huile", statut: clos}
+  - {ticket: TCK-2025-0262, date: "2025-09-24", type: alarme, code: E52, resume: "Filtre à air colmaté, remplacé selon PROC-CA-02", statut: clos}
+  - {ticket: TCK-2026-0133, date: "2026-07-02", type: alarme, code: E18, resume: "Température de sortie à 102 °C en période de forte chaleur, nettoyage du refroidisseur", statut: clos}

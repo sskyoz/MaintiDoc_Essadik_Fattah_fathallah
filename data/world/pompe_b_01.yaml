@@ -1,0 +1,111 @@
+equipment_id: POMPE-B-01
+famille: pompes
+fabricant_fictif: Kelvor
+modele: MX-400
+description: "Pompe centrifuge multicellulaire horizontale à 4 étages pour eau claire"
+
+caracteristiques:
+  debit_nominal_m3_h: 80
+  hauteur_manometrique_m: 120
+  puissance_moteur_kw: 55
+  vitesse_tr_min: 2950
+  alimentation: "400 V triphasé 50 Hz"
+  pression_refoulement_nominale_bar: 12
+  nombre_etages: 4
+  fluide: "eau claire, 5 à 40 °C"
+  garniture: "garniture mécanique simple"
+
+panneau:
+  reference_photo: photo_panneau_pompe_b
+  afficheur: "Code d'alarme sur 3 caractères (ex. E58)"
+  boutons: [MARCHE, ARRET, ACQUIT, AUTO/MANU]
+  voyants:
+    - {id: led_vert, couleur: vert, libelle: MARCHE, etat: fixe, signification: "Pompe en marche"}
+    - {id: led_orange, couleur: orange, libelle: ALERTE, etat: fixe, signification: "Alarme non critique : la pompe continue de tourner, lire le code sur l'afficheur"}
+    - {id: led_rouge, couleur: rouge, libelle: DEFAUT, etat: fixe, signification: "Arrêt de sécurité : la pompe est arrêtée, lire le code sur l'afficheur"}
+    - {id: led_bleu, couleur: bleu, libelle: AUTO, etat: fixe, signification: "Pompe en mode automatique (pilotage par le niveau du réservoir)"}
+  reference_manuel: {document_id: manuel_pompe_b, page: 22, element_id: figure_22_1}
+
+alarmes:
+  - code: E15
+    signification: "Marche à sec"
+    seuil: "Courant moteur inférieur à 40 % du courant nominal pendant plus de 5 s, ou pression de refoulement inférieure à 0,5 bar"
+    voyant: rouge
+    gravite: arret
+    action: "Arrêt automatique. Vérifier la vanne d'aspiration, amorcer la pompe (PROC-PB-01), puis acquitter."
+    reference: {document_id: manuel_pompe_b, page: 24, element_id: tableau_24_1}
+  - code: E22
+    signification: "Pression de refoulement basse"
+    seuil: "Pression de refoulement inférieure à 9,0 bar pendant plus de 10 s (seuil différent de POMPE-A-01, PIEGE-02)"
+    voyant: orange
+    gravite: alerte
+    action: "Vérifier la vanne de refoulement, le filtre d'aspiration et l'usure des étages."
+    reference: {document_id: manuel_pompe_b, page: 24, element_id: tableau_24_1}
+  - code: E33
+    signification: "Vibration élevée"
+    seuil: "Vitesse de vibration supérieure à 7,1 mm/s RMS"
+    voyant: orange
+    gravite: alerte
+    action: "Contrôler l'alignement de l'accouplement, les fixations et les roulements."
+    reference: {document_id: manuel_pompe_b, page: 24, element_id: tableau_24_1}
+  - code: E41
+    signification: "Température de palier élevée"
+    seuil: "Température de palier supérieure ou égale à 90 °C"
+    voyant: orange
+    gravite: alerte
+    action: "Contrôler le graissage et le refroidissement. À 100 °C, l'alarme E42 arrête la pompe."
+    reference: {document_id: manuel_pompe_b, page: 24, element_id: tableau_24_1}
+  - code: E42
+    signification: "Température de palier critique"
+    seuil: "Température de palier supérieure ou égale à 100 °C"
+    voyant: rouge
+    gravite: arret
+    action: "Arrêt automatique. Laisser refroidir, rechercher la cause, acquitter après correction."
+    reference: {document_id: manuel_pompe_b, page: 24, element_id: tableau_24_1}
+  - code: E57
+    signification: "Fuite de la garniture mécanique"
+    seuil: "Plus de 20 gouttes par minute au drain de la garniture"
+    voyant: orange
+    gravite: alerte
+    action: "Planifier le remplacement de la garniture (PROC-PB-02)."
+    reference: {document_id: manuel_pompe_b, page: 24, element_id: tableau_24_1}
+  - code: E58
+    signification: "Pression d'aspiration basse (risque de cavitation)"
+    seuil: "Pression d'aspiration inférieure à 0,5 bar"
+    voyant: orange
+    gravite: alerte
+    action: "Vérifier le niveau du bac d'aspiration, la vanne d'aspiration et le filtre."
+    reference: {document_id: manuel_pompe_b, page: 24, element_id: tableau_24_1}
+
+procedures:
+  - id: PROC-PB-01
+    document_id: proc_demarrage_pompe_b
+    titre: "Démarrage et arrêt de la pompe MX-400"
+    valeurs_cles:
+      - "Amorcer et purger les 4 étages avant démarrage"
+      - "Démarrer vanne de refoulement fermée, ouvrir progressivement en 30 s"
+      - "Pression de refoulement attendue : 12 bar"
+      - "Ne jamais faire fonctionner plus de 30 s vanne de refoulement fermée"
+  - id: PROC-PB-02
+    document_id: proc_garniture_pompe_b
+    titre: "Remplacement de la garniture mécanique"
+    valeurs_cles:
+      - "Consigner la pompe et fermer les vannes d'aspiration et de refoulement"
+      - "Couple des écrous de corps de pompe : 85 N.m"
+      - "Couple des vis du presse-garniture : 12 N.m"
+      - "Vérifier l'absence de fuite après 30 min de marche"
+
+documents:
+  - {document_id: manuel_pompe_b, type: manuel, titre: "Manuel d'utilisation pompe multicellulaire MX-400", version: "v1.3 (2025-04)", nb_pages: 28, langue: fr, format: pdf_texte, elements_visuels: "fig 8.1 p.8 (vue éclatée) ; fig 22.1 p.22 (panneau de commande) ; tableau codes p.24", groupes: [techniciens_pompes, responsables], usage_test: normal}
+  - {document_id: codes_alarme_pompe_b, type: codes_alarme, titre: "Codes d'alarme pompe MX-400", version: "v1.0 (2025-04)", nb_pages: 4, langue: fr, format: pdf_texte, elements_visuels: "tableau codes p.2", groupes: [techniciens_pompes, responsables], usage_test: ambigu}
+  - {document_id: fiche_securite_pompe_b, type: fiche_securite, titre: "Fiche de sécurité pompe MX-400", version: "v1.0 (2025-04)", nb_pages: 3, langue: fr, format: pdf_texte, elements_visuels: "tableau risques p.2", groupes: [techniciens_pompes, responsables], usage_test: normal}
+  - {document_id: schema_pompe_b, type: schema, titre: "Schémas hydraulique et capteurs pompe MX-400", version: "v1.0 (2025-04)", nb_pages: 2, langue: fr, format: pdf_texte, elements_visuels: "fig 1 p.1 (circuit hydraulique) ; fig 2 p.2 (implantation des capteurs)", groupes: [techniciens_pompes, responsables], usage_test: normal}
+  - {document_id: photo_panneau_pompe_b, type: photo, titre: "Panneau de commande pompe MX-400", version: "2026-11", nb_pages: 1, langue: fr, format: image, elements_visuels: "voyants vert, orange, rouge, bleu ; afficheur", groupes: [techniciens_pompes, responsables], usage_test: normal}
+  - {document_id: historique_pompe_b, type: historique, titre: "Historique des interventions POMPE-B-01", version: "v1.0 (2026-10)", nb_pages: 4, langue: fr, format: pdf_texte, elements_visuels: "tableau interventions p.2", groupes: [techniciens_pompes, responsables], usage_test: normal}
+  - {document_id: proc_demarrage_pompe_b, type: procedure, titre: "Procédure de démarrage et d'arrêt pompe MX-400", version: "v1.0 (2025-04)", nb_pages: 5, langue: fr, format: pdf_texte, elements_visuels: "schéma vannes p.2", groupes: [techniciens_pompes, responsables], usage_test: normal}
+  - {document_id: proc_garniture_pompe_b, type: procedure, titre: "Procédure de remplacement de la garniture mécanique pompe MX-400", version: "v1.0 (2025-04)", nb_pages: 6, langue: fr, format: pdf_texte, elements_visuels: "schéma garniture p.3", groupes: [techniciens_pompes, responsables], usage_test: normal}
+
+historique_interventions:
+  - {ticket: TCK-2025-0148, date: "2025-04-22", type: preventive, resume: "Contrôle des 4 étages et du jeu des roulements", statut: clos}
+  - {ticket: TCK-2025-0305, date: "2025-11-06", type: alarme, code: E58, resume: "Pression d'aspiration basse, filtre d'aspiration colmaté, nettoyé", statut: clos}
+  - {ticket: TCK-2026-0101, date: "2026-05-18", type: alarme, code: E41, resume: "Température de palier à 92 °C, regraissage des roulements", statut: clos}

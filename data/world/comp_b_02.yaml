@@ -1,0 +1,104 @@
+equipment_id: COMP-B-02
+famille: compresseurs
+fabricant_fictif: Airvex
+modele: PS-15
+description: "Compresseur d'air à piston bi-étagé, lubrifié, avec réservoir"
+
+caracteristiques:
+  puissance_moteur_kw: 11
+  pression_max_bar: 11
+  pression_service_bar: 10
+  debit_m3_min: 1.6
+  reservoir_l: 270
+  alimentation: "400 V triphasé 50 Hz"
+  huile: "ISO VG 100"
+  volume_huile_l: 2.4
+  intervalle_maintenance_h: 2000
+
+panneau:
+  reference_photo: photo_panneau_comp_b
+  afficheur: "Code sur 3 caractères (ex. M01 ou E28)"
+  boutons: [MARCHE, ARRET, ACQUIT]
+  voyants:
+    - {id: led_vert, couleur: vert, libelle: MARCHE, etat: fixe, signification: "Compresseur en marche"}
+    - {id: led_orange, couleur: orange, libelle: ALERTE, etat: fixe, signification: "Information ou alarme non critique : le sens dépend du code affiché (M01 maintenance préventive due, E28 température de refoulement élevée, E71 purge des condensats défaillante). La couleur seule ne suffit pas."}
+    - {id: led_rouge, couleur: rouge, libelle: DEFAUT, etat: fixe, signification: "Arrêt de sécurité : le compresseur est arrêté, lire le code sur l'afficheur"}
+  note_piege: "Même disposition de panneau que POMPE-A-01 (PIEGE-01)."
+  reference_manuel: {document_id: manuel_comp_b, page: 14, element_id: figure_14_2}
+
+alarmes:
+  - code: M01
+    signification: "Maintenance préventive due"
+    seuil: "Compteur d'heures de marche atteignant l'intervalle de 2000 h"
+    voyant: orange
+    gravite: information
+    action: "Planifier la maintenance préventive : vidange d'huile (PROC-CB-02), contrôle de la courroie et des soupapes. Acquitter après intervention."
+    reference: {document_id: manuel_comp_b, page: 16, element_id: tableau_16_1}
+  - code: E28
+    signification: "Température de refoulement élevée"
+    seuil: "Température de refoulement supérieure ou égale à 170 °C"
+    voyant: orange
+    gravite: alerte
+    action: "Contrôler le niveau d'huile, l'encrassement des ailettes de refroidissement et la ventilation du local. À 190 °C, l'alarme E29 arrête la machine."
+    reference: {document_id: manuel_comp_b, page: 16, element_id: tableau_16_1}
+  - code: E29
+    signification: "Température de refoulement critique"
+    seuil: "Température de refoulement supérieure ou égale à 190 °C"
+    voyant: rouge
+    gravite: arret
+    action: "Arrêt automatique. Laisser refroidir, rechercher la cause, acquitter après correction."
+    reference: {document_id: manuel_comp_b, page: 16, element_id: tableau_16_1}
+  - code: E35
+    signification: "Surcharge du moteur"
+    seuil: "Courant moteur supérieur à 120 % du courant nominal pendant plus de 10 s"
+    voyant: rouge
+    gravite: arret
+    action: "Arrêt automatique. Contrôler la tension d'alimentation, la courroie et les clapets, puis acquitter."
+    reference: {document_id: manuel_comp_b, page: 16, element_id: tableau_16_1}
+  - code: E41
+    signification: "Pression d'huile basse"
+    seuil: "Pression d'huile inférieure à 1,0 bar (sens différent de E41 sur les pompes, PIEGE-02)"
+    voyant: rouge
+    gravite: arret
+    action: "Arrêt automatique. Vérifier le niveau d'huile avant tout redémarrage."
+    reference: {document_id: manuel_comp_b, page: 16, element_id: tableau_16_1}
+  - code: E71
+    signification: "Purge des condensats défaillante"
+    seuil: "Purge automatique non ouverte pendant plus de 24 h"
+    voyant: orange
+    gravite: alerte
+    action: "Purger manuellement le réservoir et contrôler l'électrovanne de purge (PROC-CB-02)."
+    reference: {document_id: manuel_comp_b, page: 16, element_id: tableau_16_1}
+
+procedures:
+  - id: PROC-CB-01
+    document_id: proc_demarrage_comp_b
+    titre: "Démarrage et arrêt du compresseur PS-15"
+    valeurs_cles:
+      - "Vérifier le niveau d'huile au regard avant démarrage"
+      - "Vérifier que le réservoir est purgé"
+      - "Pression de service attendue : 10 bar, pression maximale : 11 bar"
+      - "Ne jamais redémarrer sous pression dans le réservoir sans le délestage activé"
+  - id: PROC-CB-02
+    document_id: proc_purge_comp_b
+    titre: "Purge des condensats et vidange d'huile"
+    valeurs_cles:
+      - "Consigner le compresseur et dépressuriser complètement le réservoir"
+      - "Huile ISO VG 100, 2,4 L"
+      - "Couple du bouchon de vidange d'huile : 30 N.m"
+      - "Intervalle de vidange : toutes les 2000 h"
+
+documents:
+  - {document_id: manuel_comp_b, type: manuel, titre: "Manuel d'utilisation compresseur à piston PS-15", version: "v1.4 (2025-03)", nb_pages: 22, langue: fr, format: pdf_texte, elements_visuels: "fig 4.1 p.4 (vue générale) ; fig 14.2 p.14 (panneau de commande) ; tableau codes p.16", groupes: [techniciens_compresseurs, responsables], usage_test: ambigu}
+  - {document_id: codes_alarme_comp_b, type: codes_alarme, titre: "Codes d'alarme compresseur PS-15", version: "v1.0 (2025-03)", nb_pages: 3, langue: fr, format: pdf_texte, elements_visuels: "tableau codes p.2", groupes: [techniciens_compresseurs, responsables], usage_test: ambigu}
+  - {document_id: fiche_securite_comp_b, type: fiche_securite, titre: "Fiche de sécurité compresseur PS-15", version: "v1.0 (2025-03)", nb_pages: 3, langue: fr, format: pdf_texte, elements_visuels: "tableau risques p.2", groupes: [techniciens_compresseurs, responsables], usage_test: normal}
+  - {document_id: schema_comp_b, type: schema, titre: "Schémas circuit air et capteurs compresseur PS-15", version: "v1.0 (2025-03)", nb_pages: 2, langue: fr, format: pdf_texte, elements_visuels: "fig 1 p.1 (circuit d'air) ; fig 2 p.2 (implantation des capteurs)", groupes: [techniciens_compresseurs, responsables], usage_test: normal}
+  - {document_id: photo_panneau_comp_b, type: photo, titre: "Panneau de commande compresseur PS-15", version: "2026-11", nb_pages: 1, langue: fr, format: image, elements_visuels: "voyants vert, orange, rouge ; afficheur", groupes: [techniciens_compresseurs, responsables], usage_test: ambigu}
+  - {document_id: historique_comp_b, type: historique, titre: "Historique des interventions COMP-B-02", version: "v1.0 (2026-10)", nb_pages: 4, langue: fr, format: pdf_texte, elements_visuels: "tableau interventions p.2", groupes: [techniciens_compresseurs, responsables], usage_test: normal}
+  - {document_id: proc_demarrage_comp_b, type: procedure, titre: "Procédure de démarrage et d'arrêt compresseur PS-15", version: "v1.0 (2025-03)", nb_pages: 4, langue: fr, format: pdf_texte, elements_visuels: "schéma circuit p.2", groupes: [techniciens_compresseurs, responsables], usage_test: normal}
+  - {document_id: proc_purge_comp_b, type: procedure, titre: "Procédure de purge des condensats et de vidange d'huile compresseur PS-15", version: "v1.0 (2025-03)", nb_pages: 5, langue: fr, format: pdf_texte, elements_visuels: "schéma vidange p.3", groupes: [techniciens_compresseurs, responsables], usage_test: normal}
+
+historique_interventions:
+  - {ticket: TCK-2025-0120, date: "2025-04-08", type: preventive, resume: "Vidange d'huile (2,4 L, couple bouchon 30 N.m) et contrôle de la courroie", statut: clos}
+  - {ticket: TCK-2025-0289, date: "2025-10-15", type: alarme, code: E71, resume: "Purge automatique bloquée, électrovanne de purge nettoyée", statut: clos}
+  - {ticket: TCK-2026-0156, date: "2026-08-04", type: alarme, code: M01, resume: "Compteur de 2000 h atteint, maintenance préventive à planifier", statut: ouvert}
