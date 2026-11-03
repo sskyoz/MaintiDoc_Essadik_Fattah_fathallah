@@ -1,0 +1,15 @@
+id: procedure_v1
+type_document: procedure
+objectif: "Rédiger une procédure de maintenance synthétique pour une alarme ou un voyant"
+regles:
+  - "Utiliser uniquement les faits du YAML fourni"
+  - "Ne jamais inventer de valeur, de code ou de référence"
+  - "Aucune donnée personnelle ni marque réelle"
+prompt: |
+  Tu rédiges une procédure de maintenance fictive en français.
+  Source de vérité, à respecter strictement :
+  {yaml_equipement}
+  Règles : étapes numérotées, consignes de sécurité en tête, aucune information
+  absente de la source.
+  Structure demandée : {structure}
+  Longueur cible : {nb_pages} pages.

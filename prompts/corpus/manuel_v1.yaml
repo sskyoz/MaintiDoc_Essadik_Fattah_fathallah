@@ -1,0 +1,16 @@
+id: manuel_v1
+type_document: manuel
+objectif: "Rédiger un manuel d'équipement synthétique à partir d'un YAML de vérité terrain"
+regles:
+  - "Utiliser uniquement les faits du YAML fourni"
+  - "Ne jamais inventer de code d'alarme ni de voyant"
+  - "Insérer les références de figure indiquées dans le YAML"
+  - "Aucune donnée personnelle ni marque réelle"
+prompt: |
+  Tu rédiges un manuel de maintenance fictif en français.
+  Source de vérité, à respecter strictement :
+  {yaml_equipement}
+  Règles : n'invente aucun code d'alarme, aucun voyant, aucune valeur absente
+  de la source. Cite les figures avec leur identifiant exact.
+  Structure demandée : {structure}
+  Longueur cible : {nb_pages} pages.

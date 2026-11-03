@@ -1,0 +1,15 @@
+id: fiche_alarme_v1
+type_document: fiche_alarme
+objectif: "Rédiger une fiche récapitulative des alarmes et voyants d'un équipement"
+regles:
+  - "Utiliser uniquement les faits du YAML fourni"
+  - "Présenter les alarmes sous forme de tableau"
+  - "Aucune donnée personnelle ni marque réelle"
+prompt: |
+  Tu rédiges une fiche d'alarmes fictive en français.
+  Source de vérité, à respecter strictement :
+  {yaml_equipement}
+  Règles : un tableau avec code, signification, procédure associée et page ;
+  rien d'absent de la source.
+  Structure demandée : {structure}
+  Longueur cible : {nb_pages} pages.
