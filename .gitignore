@@ -1,0 +1,9 @@
+.venv/
+.env
+.vscode/
+data/processed/
+data/raw_llm/
+__pycache__/
+*.pyc
+mlruns/
+models/
