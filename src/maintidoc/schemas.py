@@ -1,4 +1,4 @@
-from typing import Literal, Optional
+from typing import Literal
 
 from pydantic import BaseModel
 
@@ -21,5 +21,5 @@ class MaintiDocAnswer(BaseModel):
     answer: str
     citations: list[Citation] = []
     uncertainties: list[str] = []
-    clarification_question: Optional[str] = None
-    proposed_action: Optional[ProposedAction] = None
+    clarification_question: str | None = None
+    proposed_action: ProposedAction | None = None
