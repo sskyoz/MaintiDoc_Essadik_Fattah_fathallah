@@ -7,3 +7,4 @@ __pycache__/
 *.pyc
 mlruns/
 models/
+*.egg-info/

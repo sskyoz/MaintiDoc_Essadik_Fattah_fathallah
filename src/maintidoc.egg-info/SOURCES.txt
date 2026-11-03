@@ -1,7 +1,0 @@
-pyproject.toml
-src/maintidoc/__init__.py
-src/maintidoc/schemas.py
-src/maintidoc.egg-info/PKG-INFO
-src/maintidoc.egg-info/SOURCES.txt
-src/maintidoc.egg-info/dependency_links.txt
-src/maintidoc.egg-info/top_level.txt
