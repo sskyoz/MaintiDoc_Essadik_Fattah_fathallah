@@ -102,3 +102,25 @@ historique_interventions:
   - {ticket: TCK-2025-0120, date: "2025-04-08", type: preventive, resume: "Vidange d'huile (2,4 L, couple bouchon 30 N.m) et contrôle de la courroie", statut: clos}
   - {ticket: TCK-2025-0289, date: "2025-10-15", type: alarme, code: E71, resume: "Purge automatique bloquée, électrovanne de purge nettoyée", statut: clos}
   - {ticket: TCK-2026-0156, date: "2026-08-04", type: alarme, code: M01, resume: "Compteur de 2000 h atteint, maintenance préventive à planifier", statut: ouvert}
+
+# Faits additionnels utilisés dans les documents (vérité terrain complémentaire)
+faits_additionnels:
+  plaque_signaletique: "Compramex PS-15, n° de série PS15-25-0048, année 2025, 11 kW, 10 bar, 1,6 m3/min, 400 V, 22 A, IP55"
+  moteur: "400 V ±10 % 50 Hz, courant nominal 22 A, IP55, isolation classe F, démarrage direct"
+  raccordement_air: "Sortie d'air comprimé DN 25"
+  masse_kg: 340
+  niveau_sonore: "74 dB(A) à 1 m"
+  temperature_ambiante: "5 à 40 °C"
+  regulation: "pressostat : arrêt du moteur à 10 bar, redémarrage à 9 bar"
+  soupape_securite: "tarée à 11 bar"
+  delestage: "l'électrovanne de délestage DV1 vide la tête de compression à chaque arrêt du moteur"
+  controle_niveau_huile: "quotidien, au regard H3"
+  purge_condensats: "automatique par électrovanne DR1 ; purge manuelle du réservoir chaque semaine"
+  filtre_aspiration: "nettoyage toutes les 500 heures, remplacement toutes les 2000 heures"
+  courroie: "contrôle de l'état et de la tension à chaque maintenance de 2000 heures"
+  clapets: "contrôle à chaque maintenance de 2000 heures"
+  controle_soupape_securite: "annuel"
+  repères_circuit: "AF1 filtre d'aspiration, P1 groupe compresseur à 2 étages, IC1 refroidisseur intermédiaire, CV1 clapet anti-retour, RES1 réservoir 270 L, SV1 soupape de sécurité, PS1 pressostat, DV1 électrovanne de délestage, DR1 purge automatique des condensats, VD1 vanne de départ réseau"
+  repères_capteurs: "T1 température de refoulement (E28, E29), PT1 pression d'huile (E41), PT2 pression du réservoir (régulation), CT1 courant moteur (E35), DR1 contrôle d'ouverture de la purge (E71)"
+  repères_carter: "H1 bouchon de vidange d'huile, H2 bouchon de remplissage, H3 regard de niveau"
+  date_installation: "2025-03"
