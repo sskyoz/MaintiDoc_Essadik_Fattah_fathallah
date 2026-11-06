@@ -31,7 +31,7 @@ pieges:
   - id: PIEGE-02
     usage_test: ambigu
     description: "Le code E41 existe sur les 4 équipements avec deux sens différents : 'Température de palier élevée' sur les pompes, 'Pression d'huile basse' sur les compresseurs. Le code E22 existe sur les deux pompes avec des seuils différents (2,0 bar sur POMPE-A-01, 9,0 bar sur POMPE-B-01)."
-    documents: [codes_alarme_pompe_a, codes_alarme_pompe_b, codes_alarme_comp_a, codes_alarme_comp_b]
+    documents: [codes_alarme_pompe_a, codes_alarme_pompe_b, codes_alarme_comp_a, codes_alarme_comp_b, photo_panneau_comp_a]
   - id: PIEGE-03
     usage_test: contradictoire
     description: "Procédure de vidange du carter de palier de POMPE-A-01 : la v1 (2023-06, scannée) donne un couple de bouchon de 18 N.m, la v2 (2025-03) donne 25 N.m. La v2 remplace officiellement la v1, mais les deux restent dans le corpus."

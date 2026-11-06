@@ -83,7 +83,7 @@ documents:
   - {document_id: codes_alarme_comp_a, type: codes_alarme, titre: "Codes d'alarme compresseur VS-55", version: "v1.0 (2025-02)", nb_pages: 3, langue: fr, format: pdf_texte, elements_visuels: "tableau codes p.2", groupes: [techniciens_compresseurs, responsables], usage_test: ambigu}
   - {document_id: fiche_securite_comp_a, type: fiche_securite, titre: "Fiche de sécurité compresseur VS-55", version: "v1.0 (2025-02)", nb_pages: 3, langue: fr, format: pdf_texte, elements_visuels: "tableau risques p.2", groupes: [techniciens_compresseurs, responsables], usage_test: normal}
   - {document_id: schema_comp_a, type: schema, titre: "Schémas circuits air et huile compresseur VS-55", version: "v1.0 (2025-02)", nb_pages: 2, langue: fr, format: pdf_texte, elements_visuels: "fig 1 p.1 (circuit air et huile) ; fig 2 p.2 (implantation des capteurs)", groupes: [techniciens_compresseurs, responsables], usage_test: normal}
-  - {document_id: photo_panneau_comp_a, type: photo, titre: "Panneau de commande compresseur VS-55", version: "2026-11", nb_pages: 1, langue: fr, format: image, elements_visuels: "voyants vert, orange, rouge ; afficheur", groupes: [techniciens_compresseurs, responsables], usage_test: normal}
+  - {document_id: photo_panneau_comp_a, type: photo, titre: "Panneau de commande compresseur VS-55", version: "2026-11", nb_pages: 1, langue: fr, format: image, elements_visuels: "voyants vert, orange, rouge ; afficheur", groupes: [techniciens_compresseurs, responsables], usage_test: ambigu}
   - {document_id: historique_comp_a, type: historique, titre: "Historique des interventions COMP-A-01", version: "v1.0 (2026-10)", nb_pages: 4, langue: fr, format: pdf_texte, elements_visuels: "tableau interventions p.2", groupes: [techniciens_compresseurs, responsables], usage_test: normal}
   - {document_id: proc_demarrage_comp_a, type: procedure, titre: "Procédure de démarrage et d'arrêt compresseur VS-55", version: "v1.0 (2025-02)", nb_pages: 5, langue: fr, format: pdf_texte, elements_visuels: "schéma circuit p.2", groupes: [techniciens_compresseurs, responsables], usage_test: normal}
   - {document_id: proc_filtre_air_comp_a, type: procedure, titre: "Procédure de remplacement du filtre à air compresseur VS-55", version: "v1.0 (2025-02)", nb_pages: 4, langue: fr, format: pdf_texte, elements_visuels: "schéma filtre p.2", groupes: [techniciens_compresseurs, responsables], usage_test: normal}
@@ -92,3 +92,26 @@ historique_interventions:
   - {ticket: TCK-2025-0090, date: "2025-03-10", type: preventive, resume: "Vidange d'huile et remplacement du filtre à huile", statut: clos}
   - {ticket: TCK-2025-0262, date: "2025-09-24", type: alarme, code: E52, resume: "Filtre à air colmaté, remplacé selon PROC-CA-02", statut: clos}
   - {ticket: TCK-2026-0133, date: "2026-07-02", type: alarme, code: E18, resume: "Température de sortie à 102 °C en période de forte chaleur, nettoyage du refroidisseur", statut: clos}
+
+# Faits additionnels utilisés dans les documents (vérité terrain complémentaire)
+faits_additionnels:
+  plaque_signaletique: "Compramex VS-55, n° de série VS55-24-0112, année 2024, 55 kW, 8 bar, 9,5 m3/min, 400 V, 96 A, IP55"
+  moteur: "400 V ±10 % 50 Hz, courant nominal 96 A, IP55, isolation classe F, démarrage étoile-triangle"
+  raccordement_air: "Sortie d'air comprimé DN 50"
+  masse_kg: 1150
+  niveau_sonore: "70 dB(A) à 1 m"
+  temperature_ambiante: "2 à 40 °C"
+  refroidissement: "refroidisseur air-huile à ventilateur"
+  regulation: "mise en charge à 7,5 bar, marche à vide à 8,5 bar, pression de service 8 bar"
+  soupape_securite: "tarée à 10 bar"
+  intervalle_vidange_huile_et_filtre_huile: "4000 heures de marche ou 12 mois, au premier des deux atteint"
+  filtre_a_air: "contrôle mensuel, remplacement toutes les 4000 heures ou dès l'alarme E52"
+  separateur_huile: "remplacement toutes les 4000 heures ou dès l'alarme E63"
+  nettoyage_refroidisseur: "tous les 3 mois"
+  controle_niveau_huile: "quotidien, au regard"
+  purge_condensats: "automatique, contrôle mensuel"
+  controle_soupape_securite: "annuel"
+  repères_circuit: "AF1 filtre à air, IV1 vanne d'admission, AE1 bloc vis, OS1 séparateur air-huile, MPV1 soupape de pression minimale, AC1 post-refroidisseur, VD1 vanne de départ réseau, OC1 refroidisseur d'huile, OF1 filtre à huile"
+  repères_capteurs: "T1 température de sortie du bloc vis (E18, E19), PT1 pression d'huile (E41), dP1 perte de charge du filtre à air (E52), dP2 perte de charge du séparateur d'huile (E63), PT2 pression du réseau (régulation)"
+  repères_filtre_air: "C1 couvercle, C2 vis du couvercle (4), C3 élément filtrant, C4 indicateur de colmatage"
+  date_installation: "2024-12"
