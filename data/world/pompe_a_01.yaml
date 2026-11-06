@@ -102,7 +102,27 @@ documents:
   - {document_id: proc_vidange_pompe_a_v2, type: procedure, titre: "Procédure de vidange du carter de palier pompe HX-200 (v2)", version: "v2 (2025-03)", nb_pages: 4, langue: fr, format: pdf_texte, elements_visuels: "schéma carter p.2", groupes: [techniciens_pompes, responsables], usage_test: contradictoire}
 
 historique_interventions:
-  - {ticket: TCK-2025-0112, date: "2025-02-14", type: preventive, resume: "Graissage des roulements et vidange du carter de palier selon la procédure v1 (couple bouchon 18 N.m)", statut: clos}
+  - {ticket: TCK-2025-0112, date: "2025-02-14", type: preventive, resume: "Contrôle des roulements et vidange du carter de palier selon la procédure PROC-PA-02 v1 (couple bouchon 18 N.m)", statut: clos}
   - {ticket: TCK-2025-0231, date: "2025-08-12", type: alarme, code: E41, resume: "Température de palier relevée à 87 °C, niveau d'huile bas. Complément d'huile, surveillance pendant 48 h", statut: clos}
   - {ticket: TCK-2026-0044, date: "2026-01-20", type: alarme, code: E57, resume: "Fuite de la garniture mécanique constatée, garniture remplacée", statut: clos}
   - {ticket: TCK-2026-0187, date: "2026-09-30", type: alarme, code: E33, resume: "Vibration intermittente au-dessus de 4,5 mm/s, contrôle d'alignement planifié", statut: ouvert}
+
+# Faits additionnels utilisés dans les documents (vérité terrain complémentaire)
+faits_additionnels:
+  plaque_signaletique: "Pompall HX-200, n° de série HX200-24-0173, année 2024, 120 m3/h, 32 m, 15 kW, 2900 tr/min, 27 A, IP55"
+  raccordements: "Aspiration DN 100, refoulement DN 80"
+  masse_kg: 185
+  moteur: "400 V ±10 % 50 Hz, courant nominal 27 A, IP55, isolation classe F"
+  pression_max_service_bar: 6
+  npsh_requis_m: 3.5
+  temperature_ambiante_max_c: 40
+  niveau_sonore: "78 dB(A) à 1 m"
+  temps_ouverture_vanne_refoulement_s: 20
+  intervalle_vidange_carter: "4000 heures de marche ou 12 mois, au premier des deux atteint"
+  intervalle_controle_alignement: "6 mois"
+  controle_garniture: "mensuel (visuel)"
+  nettoyage_filtre_aspiration: "tous les 3 mois, ou dès l'alarme E22"
+  repères_circuit: "V1 vanne d'aspiration, V2 vanne de refoulement, V3 purge, F1 filtre d'aspiration, CV1 clapet anti-retour"
+  repères_capteurs: "T1 thermocouple de palier, V1c capteur de vibrations, PT1 pression d'aspiration, PT2 pression de refoulement, LS1 détecteur de fuite de garniture, CT1 mesure de courant moteur"
+  repères_carter: "B1 bouchon de vidange, B2 bouchon de remplissage, B3 regard de niveau"
+  date_installation: "2024-11"
