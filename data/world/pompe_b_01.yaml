@@ -96,7 +96,7 @@ procedures:
       - "Vérifier l'absence de fuite après 30 min de marche"
 
 documents:
-  - {document_id: manuel_pompe_b, type: manuel, titre: "Manuel d'utilisation pompe multicellulaire MX-400", version: "v1.3 (2025-04)", nb_pages: 28, langue: fr, format: pdf_texte, elements_visuels: "fig 8.1 p.8 (vue éclatée) ; fig 22.1 p.22 (panneau de commande) ; tableau codes p.24", groupes: [techniciens_pompes, responsables], usage_test: normal}
+  - {document_id: manuel_pompe_b, type: manuel, titre: "Manuel d'utilisation pompe multicellulaire MX-400", version: "v1.3 (2025-04)", nb_pages: 28, langue: fr, format: pdf_texte, elements_visuels: "fig 8.1 p.8 (vue générale) ; fig 22.1 p.22 (panneau de commande) ; tableau codes p.24", groupes: [techniciens_pompes, responsables], usage_test: normal}
   - {document_id: codes_alarme_pompe_b, type: codes_alarme, titre: "Codes d'alarme pompe MX-400", version: "v1.0 (2025-04)", nb_pages: 4, langue: fr, format: pdf_texte, elements_visuels: "tableau codes p.2", groupes: [techniciens_pompes, responsables], usage_test: ambigu}
   - {document_id: fiche_securite_pompe_b, type: fiche_securite, titre: "Fiche de sécurité pompe MX-400", version: "v1.0 (2025-04)", nb_pages: 3, langue: fr, format: pdf_texte, elements_visuels: "tableau risques p.2", groupes: [techniciens_pompes, responsables], usage_test: normal}
   - {document_id: schema_pompe_b, type: schema, titre: "Schémas hydraulique et capteurs pompe MX-400", version: "v1.0 (2025-04)", nb_pages: 2, langue: fr, format: pdf_texte, elements_visuels: "fig 1 p.1 (circuit hydraulique) ; fig 2 p.2 (implantation des capteurs)", groupes: [techniciens_pompes, responsables], usage_test: normal}
@@ -109,3 +109,24 @@ historique_interventions:
   - {ticket: TCK-2025-0148, date: "2025-04-22", type: preventive, resume: "Contrôle des 4 étages et du jeu des roulements", statut: clos}
   - {ticket: TCK-2025-0305, date: "2025-11-06", type: alarme, code: E58, resume: "Pression d'aspiration basse, filtre d'aspiration colmaté, nettoyé", statut: clos}
   - {ticket: TCK-2026-0101, date: "2026-05-18", type: alarme, code: E41, resume: "Température de palier à 92 °C, regraissage des roulements", statut: clos}
+
+# Faits additionnels utilisés dans les documents (vérité terrain complémentaire)
+faits_additionnels:
+  plaque_signaletique: "Pompall MX-400, n° de série MX400-25-0061, année 2025, 80 m3/h, 120 m, 55 kW, 2950 tr/min, 98 A, IP55"
+  raccordements: "Aspiration DN 80, refoulement DN 65"
+  masse_kg: 410
+  moteur: "400 V ±10 % 50 Hz, courant nominal 98 A, IP55, isolation classe F, démarrage par démarreur progressif"
+  pression_max_service_bar: 16
+  npsh_requis_m: 4.2
+  temperature_ambiante_max_c: 40
+  niveau_sonore: "85 dB(A) à 1 m"
+  temps_ouverture_vanne_refoulement_s: 30
+  demarrage: "vanne de refoulement fermée au démarrage (réduit la charge du moteur), puis ouverture progressive en 30 s"
+  roulements: "graissés, regraissage toutes les 2000 heures de marche ou 6 mois, au premier des deux atteint"
+  intervalle_controle_alignement: "6 mois"
+  controle_garniture: "mensuel (visuel)"
+  nettoyage_filtre_aspiration: "tous les 3 mois, ou dès l'alarme E58"
+  repères_circuit: "V1 vanne d'aspiration, V2 vanne de refoulement, V3 purge, F1 filtre d'aspiration, CV1 clapet anti-retour"
+  repères_capteurs: "T1 thermocouple de palier, V1c capteur de vibrations, PT1 pression d'aspiration, PT2 pression de refoulement, LS1 détecteur de fuite de garniture, CT1 mesure de courant moteur"
+  mode_auto: "En mode AUTO (voyant bleu), la pompe démarre et s'arrête selon le niveau du réservoir, géré par l'automate du site"
+  date_installation: "2025-03"
