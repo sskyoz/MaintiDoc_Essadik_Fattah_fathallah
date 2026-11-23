@@ -2,6 +2,7 @@
 .env
 .vscode/
 data/processed/
+data/chroma/
 data/raw_llm/
 __pycache__/
 *.pyc

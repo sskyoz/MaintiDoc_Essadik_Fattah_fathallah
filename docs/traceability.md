@@ -12,7 +12,7 @@ Statuts : à faire / en cours / fait
 | 6 | OCR local | 2 | Script d'OCR, PDF scannés indexés | à faire |
 | 6b | Extraction texte/images (ingestion partielle) | 2 | extraire_document, aperçu | fait |
 | 6c | Embeddings CLIP texte/image (hors Qdrant) | 2 | vectoriser_document → embeddings.json | fait |
-| 7 | Recherche texte et image, fusion RRF | 3 | Tests de recherche, ablation | à faire |
+| 7 | Recherche texte et image, fusion RRF | 3 | Tests de recherche, ablation | en cours |
 | 8 | Filtrage des accès avant récupération et à l'affichage | 3 | Tests d'accès entre groupes | à faire |
 | 9 | Citations pointant vers des pages et figures réellement récupérées | 4 | Vérificateur de citations | à faire |
 | 10 | Citation qui soutient l'affirmation associée | 4 | Prompt evidence_check, métrique | à faire |
