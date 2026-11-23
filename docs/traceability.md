@@ -14,7 +14,7 @@ Statuts : à faire / en cours / fait
 | 8 | Filtrage des accès avant récupération et à l'affichage | 3 | Tests d'accès entre groupes | à faire |
 | 9 | Citations pointant vers des pages et figures réellement récupérées | 4 | Vérificateur de citations | à faire |
 | 10 | Citation qui soutient l'affirmation associée | 4 | Prompt evidence_check, métrique | à faire |
-| 11 | Prompts versionnés dans Git | 0 et 4 | prompts/ | en cours |
+| 11 | Prompts versionnés dans Git | 0 et 4 | prompts/answer_v1.yaml et prompts/corpus/ | en cours |
 | 12 | Sorties validées par schéma Pydantic | 0 et 4 | schemas.py, tests | fait |
 | 13 | Incertitude : clarification ou abstention, sans pourcentage inventé | 4 | Scénarios d'évaluation | à faire |
 | 14 | Serveur MCP avec 3 outils | 5 | mcp_server/ | à faire |

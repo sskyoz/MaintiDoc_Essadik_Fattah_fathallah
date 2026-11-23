@@ -1,16 +1,19 @@
 """Travail sur un document du corpus.
 
 Travailler sur un document veut dire : ouvrir un document inventorié, lire
-ses pages, et rendre une réponse validée par MaintiDocAnswer. La citation
-désigne une page réellement lue. Le texte de la réponse est un extrait de
-cette page. S'il n'y a rien à citer, la réponse s'abstient.
+ses pages, sélectionner un extrait pertinent, puis faire rédiger une réponse
+par un modèle local. La citation désigne une page réellement lue. Si aucun
+extrait n'est trouvé, la réponse s'abstient sans appeler le modèle.
 """
+
+from __future__ import annotations
 
 import csv
 import json
 import re
 import sys
 import unicodedata
+from collections.abc import Callable
 from pathlib import Path
 
 from maintidoc.schemas import Citation, MaintiDocAnswer
@@ -25,6 +28,8 @@ MOTS_VIDES = {
     "sa", "se", "si", "son", "sont", "sur", "tu", "un", "une", "votre",
     "vous", "y",
 }
+
+Redacteur = Callable[..., MaintiDocAnswer]
 
 
 def racine_depot() -> Path:
@@ -139,8 +144,25 @@ def _abstention(answer: str, incertitude: str) -> MaintiDocAnswer:
     return MaintiDocAnswer(status="abstained", answer=answer, uncertainties=[incertitude])
 
 
+def _assembler(
+    brouillon: MaintiDocAnswer, citation: Citation
+) -> MaintiDocAnswer:
+    citations = [citation] if brouillon.status == "answered" else []
+    return MaintiDocAnswer(
+        status=brouillon.status,
+        answer=brouillon.answer,
+        citations=citations,
+        uncertainties=brouillon.uncertainties,
+        clarification_question=brouillon.clarification_question,
+        proposed_action=None,
+    )
+
+
 def travailler_sur_document(
-    document_id: str, question: str, groupe: str | None = None
+    document_id: str,
+    question: str,
+    groupe: str | None = None,
+    rediger: Redacteur | None = None,
 ) -> MaintiDocAnswer:
     """Répond à une question à partir d'un seul document du corpus."""
     fiche = fiche_inventaire(document_id)
@@ -188,17 +210,23 @@ def travailler_sur_document(
 
     _score_page, _occ, numero, texte, terme = max(candidats, key=lambda c: (c[0], c[1], -c[2]))
     extrait = _extrait(texte, terme)
-    return MaintiDocAnswer(
-        status="answered",
-        answer=extrait,
-        citations=[
-            Citation(
-                document_id=document_id,
-                page=numero,
-                element_id=_element(texte, numero),
-            )
-        ],
+    citation = Citation(
+        document_id=document_id,
+        page=numero,
+        element_id=_element(texte, numero),
     )
+    if rediger is None:
+        from maintidoc.llm import rediger_reponse
+
+        rediger = rediger_reponse
+    brouillon = rediger(
+        question=question,
+        document_id=document_id,
+        page=citation.page,
+        element_id=citation.element_id,
+        extrait=extrait,
+    )
+    return _assembler(brouillon, citation)
 
 
 def main(argv: list[str] | None = None) -> int:
