@@ -2,6 +2,7 @@ import json
 from pathlib import Path
 
 from maintidoc.vectorisation import (
+    apercu_vectorisation,
     decouper_texte,
     numero_page,
     vectoriser_document,
@@ -75,3 +76,11 @@ def test_vectoriser_document_sans_clip(monkeypatch, tmp_path):
     assert data["nombre_elements"] == 2
     assert data["elements"][0]["type"] == "texte"
     assert data["elements"][1]["type"] == "image"
+
+    monkeypatch.setattr(
+        "maintidoc.vectorisation.dossier_sortie", lambda _doc: out
+    )
+    apercu = list(apercu_vectorisation("schema_pompe_a", n=4))
+    types = {ligne["type"] for ligne in apercu}
+    assert "texte" in types
+    assert "image" in types

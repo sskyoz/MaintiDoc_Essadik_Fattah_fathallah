@@ -37,9 +37,12 @@ def main() -> int:
     print(f"Images : {resultat.nombre_images}")
     print(f"Dimension : {resultat.dimension}")
 
-    print("\n=== Aperçu des embeddings ===")
-    for ligne in apercu_vectorisation(args.document_id, n=3):
+    print("\n=== Aperçu des embeddings (texte + image) ===")
+    for ligne in apercu_vectorisation(args.document_id, n=4):
         print(json.dumps(ligne, ensure_ascii=False))
+    print(
+        "\nNote : un nouvel appel réécrit embeddings.json (pas de doublon)."
+    )
     return 0
 
 

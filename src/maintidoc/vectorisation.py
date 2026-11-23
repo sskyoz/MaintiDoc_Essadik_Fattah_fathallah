@@ -201,14 +201,23 @@ def charger_embeddings(document_id: str) -> dict[str, object]:
 
 
 def apercu_vectorisation(document_id: str, n: int = 3) -> Iterable[dict[str, object]]:
+    """Aperçu mélangé : quelques textes puis quelques images (pas seulement le début)."""
     data = charger_embeddings(document_id)
-    for element in data["elements"][:n]:
+    elements = data["elements"]
+    textes = [e for e in elements if e["type"] == "texte"]
+    images = [e for e in elements if e["type"] == "image"]
+    n_texte = max(1, n // 2) if images else n
+    choisis = textes[:n_texte] + images[: max(1, n - n_texte)]
+    if not images:
+        choisis = elements[:n]
+    for element in choisis[:n]:
         emb = element["embedding"]
         yield {
             "id": element["id"],
             "type": element["type"],
             "page": element["page"],
             "texte": str(element.get("texte", ""))[:120],
+            "source": element.get("source"),
             "dimension": len(emb),
             "embedding_5": emb[:5],
         }
