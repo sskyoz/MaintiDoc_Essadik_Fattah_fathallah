@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from maintidoc.agent import racine_depot
+from maintidoc.agent import fiche_inventaire, racine_depot
 
 MODEL_NAME = "ViT-B-32"
 PRETRAINED = "laion2b_s34b_b79k"
@@ -33,7 +33,8 @@ def encoder_exemple(
     from PIL import Image
 
     if image is None:
-        image = racine_depot() / "corpus" / "images" / "photo_panneau_pompe_a.jpg"
+        fiche = fiche_inventaire("photo_panneau_pompe_a")
+        image = racine_depot() / "corpus" / fiche["fichier"]
     if not image.is_file():
         raise FileNotFoundError(f"Image introuvable : {image}")
 

@@ -63,10 +63,11 @@ def main():
         ko("identifiants en double dans l'inventaire")
 
     listes = {r["fichier"] for r in rows}
+    ignores = {"inventaire.csv", "prompts_corpus.md", "README.md"}
     presents = {
         p.relative_to(CORPUS).as_posix()
         for p in CORPUS.rglob("*")
-        if p.is_file() and p.name not in ("inventaire.csv", "prompts_corpus.md")
+        if p.is_file() and p.name not in ignores
     }
     for manquant in sorted(listes - presents):
         ko(f"fichier listé mais absent : {manquant}")
