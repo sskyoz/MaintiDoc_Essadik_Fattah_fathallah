@@ -1,4 +1,4 @@
-"""RAG MaintiDoc : ChromaDB → contexte → Ollama → MaintiDocAnswer."""
+"""RAG MaintiDoc : Qdrant → contexte → Ollama → MaintiDocAnswer."""
 
 from __future__ import annotations
 
@@ -11,7 +11,12 @@ from pathlib import Path
 from typing import Any
 
 from maintidoc.agent import _termes, plier, racine_depot
-from maintidoc.chroma_index import formater_resultats, ouvrir_collection, rechercher
+from maintidoc.qdrant_index import (
+    formater_resultats,
+    lister_passages,
+    ouvrir_client,
+    rechercher,
+)
 from maintidoc.schemas import Citation, MaintiDocAnswer
 
 RedacteurRag = Callable[..., MaintiDocAnswer]
@@ -118,17 +123,14 @@ def completer_par_mots_cles(
     question: str,
     lignes: list[dict[str, Any]],
     *,
-    collection=None,
+    client=None,
 ) -> list[dict[str, Any]]:
     """Complète la recherche vectorielle par un balayage lexical (codes E41, etc.)."""
     codes = _codes_question(question)
     if not codes:
         return lignes
 
-    col = collection or ouvrir_collection()
-    brut = col.get(where={"type": "texte"}, include=["documents", "metadatas"])
-    documents = brut.get("documents") or []
-    metadatas = brut.get("metadatas") or []
+    cli = client or ouvrir_client()
     deja = {
         (
             str(l.get("document_id")),
@@ -139,32 +141,20 @@ def completer_par_mots_cles(
         for l in lignes
     }
     extras: list[dict[str, Any]] = []
-    for document, meta in zip(documents, metadatas, strict=True):
-        texte = str(document or "")
+    for ligne in lister_passages(type_resultat="texte", client=cli):
+        texte = str(ligne.get("texte") or "")
         indexable = _texte_indexable(texte)
         if not any(code in indexable for code in codes):
             continue
         cle = (
-            str(meta.get("document_id")),
-            int(meta.get("page") or -1),
-            meta.get("fragment"),
+            str(ligne.get("document_id")),
+            int(ligne.get("page") or -1),
+            ligne.get("fragment"),
             texte,
         )
         if cle in deja:
             continue
         deja.add(cle)
-        ligne = {
-            "rang": 0,
-            "type": meta.get("type"),
-            "document_id": meta.get("document_id"),
-            "page": meta.get("page"),
-            "source": meta.get("source"),
-            "distance": 1.0,
-            "similarite": 0.0,
-            "texte": texte,
-        }
-        if "fragment" in meta:
-            ligne["fragment"] = meta["fragment"]
         extras.append(ligne)
     return lignes + extras
 
@@ -192,9 +182,9 @@ def rag(
     type_resultat: str | None = "texte",
     image_requete: str | Path | None = None,
     rediger: RedacteurRag | None = None,
-    collection=None,
+    client=None,
 ) -> MaintiDocAnswer:
-    """Recherche Chroma puis rédaction locale sourcée."""
+    """Recherche Qdrant puis rédaction locale sourcée."""
     if not question.strip() and image_requete is None:
         return MaintiDocAnswer(
             status="needs_clarification",
@@ -209,7 +199,7 @@ def rag(
             image=image_requete,
             type_resultat=type_resultat,  # type: ignore[arg-type]
             k=max(n_recherche, k),
-            collection=collection,
+            client=client,
         )
     except ValueError as exc:
         return MaintiDocAnswer(
@@ -219,9 +209,7 @@ def rag(
         )
 
     candidates = filtrer_par_groupe(formater_resultats(bruts), groupe)
-    candidates = completer_par_mots_cles(
-        question, candidates, collection=collection
-    )
+    candidates = completer_par_mots_cles(question, candidates, client=client)
     candidates = filtrer_par_groupe(candidates, groupe)
     candidates = filtrer_sources_code(question, candidates)
     lignes = rerank_lexical(question, candidates)[:k]

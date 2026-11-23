@@ -1,7 +1,7 @@
 # Corpus MaintiDoc — arborescence
 
 Organisation proche d’une GED légère (équipement → type → document → version),
-tout en gardant un `document_id` stable pour les citations et ChromaDB.
+tout en gardant un `document_id` stable pour les citations et Qdrant.
 
 ```text
 corpus/
@@ -37,5 +37,5 @@ corpus/
 - Fichier brut : toujours nommé `<document_id>.<ext>` (exigence inventaire / citations).
 - Un document multi-équipements va dans `raw/_shared/<famille>/...`.
 - Les dérivés (texte extrait, images, embeddings) restent dans `data/processed/<document_id>/`
-  jusqu’à l’indexation ChromaDB / Qdrant.
+  jusqu’à l’indexation Qdrant.
 - Ne pas renommer un `document_id` sans mettre à jour inventaire, embeddings et tests.

@@ -7,7 +7,7 @@ conventions:
   nom_de_fichier: "<document_id>.<extension>"
   chemin_brut: "corpus/raw/<EQUIPEMENT|/_shared/<famille>>/<type>/<document_id>/<version_slug>/<document_id>.<ext>"
   version: "vX.Y (AAAA-MM)"
-  derives: "data/processed/<document_id>/ (textes, images, embeddings) avant index ChromaDB/Qdrant"
+  derives: "data/processed/<document_id>/ (textes, images, embeddings) avant index Qdrant"
   marques: "Pompall (pompes) et Compramex (compresseurs) sont des noms fictifs. Vérifier qu'ils ne correspondent à aucune marque réelle."
 
 familles:

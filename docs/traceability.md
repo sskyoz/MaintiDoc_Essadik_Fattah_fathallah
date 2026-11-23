@@ -12,8 +12,8 @@ Statuts : à faire / en cours / fait
 | 6 | OCR local | 2 | Script d'OCR, PDF scannés indexés | à faire |
 | 6b | Extraction texte/images (ingestion partielle) | 2 | extraire_document, aperçu | fait |
 | 6c | Embeddings CLIP texte/image (hors Qdrant) | 2 | vectoriser_document → embeddings.json | fait |
-| 6d | Index ChromaDB local (avant Qdrant) | 2–3 | chroma_index, collection CLIP | fait |
-| 6e | RAG Chroma → Ollama → MaintiDocAnswer | 3–4 | rag.py, answer_rag_v1, tests | fait |
+| 6d | Index vectoriel CLIP (Qdrant, cible cahier) | 2–3 | qdrant_index, collection CLIP | fait |
+| 6e | RAG Qdrant → Ollama → MaintiDocAnswer | 3–4 | rag.py, answer_rag_v1, tests | fait |
 | 7 | Recherche texte et image, fusion RRF | 3 | Tests de recherche, ablation | en cours |
 | 8 | Filtrage des accès avant récupération et à l'affichage | 3 | Tests d'accès entre groupes | en cours |
 | 9 | Citations pointant vers des pages et figures réellement récupérées | 4 | Vérificateur de citations | en cours |

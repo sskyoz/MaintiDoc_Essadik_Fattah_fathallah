@@ -161,7 +161,7 @@ def rediger_reponse_rag(
     question: str,
     sources: list[dict[str, Any]],
 ) -> MaintiDocAnswer:
-    """Rédaction à partir de plusieurs extraits Chroma ; sans citations inventées."""
+    """Rédaction à partir de plusieurs extraits Qdrant ; sans citations inventées."""
     if not sources:
         return MaintiDocAnswer(
             status="abstained",

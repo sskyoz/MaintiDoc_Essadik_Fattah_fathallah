@@ -3,6 +3,7 @@
 .vscode/
 data/processed/
 data/chroma/
+data/qdrant/
 data/raw_llm/
 __pycache__/
 *.pyc

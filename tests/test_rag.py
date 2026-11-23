@@ -49,7 +49,7 @@ def test_filtrer_par_groupe(monkeypatch):
     assert filtrées[0]["document_id"] == "schema_pompe_a"
 
 
-def test_rag_chroma_vers_reponse(monkeypatch):
+def test_rag_qdrant_vers_reponse(monkeypatch):
     monkeypatch.setattr(
         "maintidoc.rag.rechercher",
         lambda **_kwargs: {
@@ -70,7 +70,7 @@ def test_rag_chroma_vers_reponse(monkeypatch):
     )
     monkeypatch.setattr(
         "maintidoc.rag.completer_par_mots_cles",
-        lambda question, lignes, collection=None: lignes,
+        lambda question, lignes, client=None: lignes,
     )
 
     def fake_rediger(**kwargs):
@@ -111,7 +111,7 @@ def test_rag_groupe_sans_acces(monkeypatch):
     )
     monkeypatch.setattr(
         "maintidoc.rag.completer_par_mots_cles",
-        lambda question, lignes, collection=None: lignes,
+        lambda question, lignes, client=None: lignes,
     )
 
     def interdit(**_kwargs):

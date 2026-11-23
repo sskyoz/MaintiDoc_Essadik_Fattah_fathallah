@@ -10,7 +10,7 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-      - run: pip install pytest ruff pydantic pymupdf pyyaml chromadb
+      - run: pip install pytest ruff pydantic pymupdf pyyaml "qdrant-client==1.20.0"
       - run: pip install -e .
       - run: ruff check .
       - run: pytest -q
