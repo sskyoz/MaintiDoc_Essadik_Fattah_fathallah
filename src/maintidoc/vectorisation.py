@@ -29,20 +29,43 @@ def decouper_texte(
     chevauchement: int = 10,
     bpe=None,
 ) -> Iterator[str]:
-    """Découper le texte en fragments courts adaptés à CLIP (tokens BPE)."""
+    """Découpe en fragments CLIP sans passer par decode BPE (qui casse E41 → e 4 1).
+
+    On compte les tokens BPE mot à mot, mais on stocke le texte original joint,
+    pour que Chroma/RAG gardent des codes d'alarme lisibles.
+    """
     if not 0 <= chevauchement < taille:
         raise ValueError("Le chevauchement doit être inférieur à la taille.")
     if bpe is None:
         from open_clip.tokenizer import SimpleTokenizer
 
         bpe = SimpleTokenizer()
-    tokens = bpe.encode(texte)
-    for debut in range(0, len(tokens), taille - chevauchement):
-        fragment = bpe.decode(tokens[debut : debut + taille]).strip()
+    mots = texte.split()
+    if not mots:
+        return
+    counts = [max(1, len(bpe.encode(mot))) for mot in mots]
+    debut = 0
+    n = len(mots)
+    while debut < n:
+        total = 0
+        fin = debut
+        while fin < n and total + counts[fin] <= taille:
+            total += counts[fin]
+            fin += 1
+        if fin == debut:
+            fin = debut + 1
+        fragment = " ".join(mots[debut:fin]).strip()
         if fragment:
             yield fragment
-        if debut + taille >= len(tokens):
+        if fin >= n:
             break
+        avancer = max(1, taille - chevauchement)
+        consomme = 0
+        suivant = debut
+        while suivant < fin and consomme < avancer:
+            consomme += counts[suivant]
+            suivant += 1
+        debut = suivant if suivant > debut else debut + 1
 
 
 def encoder_textes(

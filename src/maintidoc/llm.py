@@ -14,12 +14,18 @@ import yaml
 
 from maintidoc.schemas import MaintiDocAnswer
 
-PROMPT_ANSWER = Path(__file__).resolve().parents[2] / "prompts" / "answer_v1.yaml"
+PROMPTS = Path(__file__).resolve().parents[2] / "prompts"
+PROMPT_ANSWER = PROMPTS / "answer_v1.yaml"
+PROMPT_ANSWER_RAG = PROMPTS / "answer_rag_v1.yaml"
 JSON_BLOC = re.compile(r"\{.*\}", re.DOTALL)
 
 
 def charger_prompt_answer() -> dict[str, Any]:
     return yaml.safe_load(PROMPT_ANSWER.read_text(encoding="utf-8"))
+
+
+def charger_prompt_answer_rag() -> dict[str, Any]:
+    return yaml.safe_load(PROMPT_ANSWER_RAG.read_text(encoding="utf-8"))
 
 
 def construire_prompt(
@@ -38,6 +44,18 @@ def construire_prompt(
         element_id=element_id,
         extrait=extrait,
     )
+
+
+def construire_prompt_rag(*, question: str, sources: list[dict[str, Any]]) -> str:
+    blocs = []
+    for index, source in enumerate(sources, start=1):
+        blocs.append(
+            f"[S{index}] document_id={source['document_id']} "
+            f"page={source['page']} type={source.get('type', 'texte')}\n"
+            f"{source['texte']}"
+        )
+    spec = charger_prompt_answer_rag()
+    return spec["prompt"].format(question=question, sources="\n\n".join(blocs))
 
 
 def _base_ollama() -> str:
@@ -63,7 +81,7 @@ def appeler_ollama(prompt: str) -> str:
         method="POST",
     )
     try:
-        with urllib.request.urlopen(requete, timeout=180) as reponse:
+        with urllib.request.urlopen(requete, timeout=300) as reponse:
             corps = json.load(reponse)
     except urllib.error.URLError as exc:
         raise RuntimeError(
@@ -89,6 +107,34 @@ def _parser_json(texte: str) -> dict[str, Any]:
     return donnees
 
 
+def _normaliser_sortie_modele(donnees: dict[str, Any]) -> dict[str, Any]:
+    """Corrige les écarts fréquents du petit modèle local avant validation."""
+    normalise = dict(donnees)
+    if normalise.get("answer") is None:
+        normalise["answer"] = ""
+    elif not isinstance(normalise.get("answer"), str):
+        normalise["answer"] = str(normalise["answer"])
+    if normalise.get("citations") is None:
+        normalise["citations"] = []
+    normalise["citations"] = []
+    normalise["proposed_action"] = None
+    if normalise.get("uncertainties") is None:
+        normalise["uncertainties"] = []
+    if "status" not in normalise or normalise["status"] not in {
+        "answered",
+        "needs_clarification",
+        "abstained",
+    }:
+        normalise["status"] = "abstained" if not normalise["answer"] else "answered"
+    if normalise["status"] == "answered" and not str(normalise["answer"]).strip():
+        normalise["status"] = "abstained"
+        normalise["answer"] = "Réponse modèle incomplète."
+        normalise["uncertainties"] = list(normalise.get("uncertainties") or []) + [
+            "Le modèle n'a pas fourni de texte de réponse."
+        ]
+    return normalise
+
+
 def rediger_reponse(
     *,
     question: str,
@@ -106,7 +152,23 @@ def rediger_reponse(
         extrait=extrait,
     )
     brut = appeler_ollama(prompt)
-    donnees = _parser_json(brut)
-    donnees["citations"] = []
-    donnees["proposed_action"] = None
+    donnees = _normaliser_sortie_modele(_parser_json(brut))
+    return MaintiDocAnswer.model_validate(donnees)
+
+
+def rediger_reponse_rag(
+    *,
+    question: str,
+    sources: list[dict[str, Any]],
+) -> MaintiDocAnswer:
+    """Rédaction à partir de plusieurs extraits Chroma ; sans citations inventées."""
+    if not sources:
+        return MaintiDocAnswer(
+            status="abstained",
+            answer="Aucune source exploitable n'a été fournie.",
+            uncertainties=["Contexte vide."],
+        )
+    prompt = construire_prompt_rag(question=question, sources=sources)
+    brut = appeler_ollama(prompt)
+    donnees = _normaliser_sortie_modele(_parser_json(brut))
     return MaintiDocAnswer.model_validate(donnees)

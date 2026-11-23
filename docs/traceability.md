@@ -12,11 +12,13 @@ Statuts : à faire / en cours / fait
 | 6 | OCR local | 2 | Script d'OCR, PDF scannés indexés | à faire |
 | 6b | Extraction texte/images (ingestion partielle) | 2 | extraire_document, aperçu | fait |
 | 6c | Embeddings CLIP texte/image (hors Qdrant) | 2 | vectoriser_document → embeddings.json | fait |
+| 6d | Index ChromaDB local (avant Qdrant) | 2–3 | chroma_index, collection CLIP | fait |
+| 6e | RAG Chroma → Ollama → MaintiDocAnswer | 3–4 | rag.py, answer_rag_v1, tests | fait |
 | 7 | Recherche texte et image, fusion RRF | 3 | Tests de recherche, ablation | en cours |
-| 8 | Filtrage des accès avant récupération et à l'affichage | 3 | Tests d'accès entre groupes | à faire |
-| 9 | Citations pointant vers des pages et figures réellement récupérées | 4 | Vérificateur de citations | à faire |
+| 8 | Filtrage des accès avant récupération et à l'affichage | 3 | Tests d'accès entre groupes | en cours |
+| 9 | Citations pointant vers des pages et figures réellement récupérées | 4 | Vérificateur de citations | en cours |
 | 10 | Citation qui soutient l'affirmation associée | 4 | Prompt evidence_check, métrique | à faire |
-| 11 | Prompts versionnés dans Git | 0 et 4 | prompts/answer_v1.yaml et prompts/corpus/ | en cours |
+| 11 | Prompts versionnés dans Git | 0 et 4 | prompts/answer_v1.yaml, answer_rag_v1.yaml | en cours |
 | 12 | Sorties validées par schéma Pydantic | 0 et 4 | schemas.py, tests | fait |
 | 13 | Incertitude : clarification ou abstention, sans pourcentage inventé | 4 | Scénarios d'évaluation | à faire |
 | 14 | Serveur MCP avec 3 outils | 5 | mcp_server/ | à faire |

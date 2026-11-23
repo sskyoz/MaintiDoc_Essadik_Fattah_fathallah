@@ -136,16 +136,17 @@ def formater_resultats(resultats: dict[str, Any]) -> list[dict[str, Any]]:
     for rang, (document, meta, distance) in enumerate(
         zip(docs, metas, dists, strict=True), start=1
     ):
-        lignes.append(
-            {
-                "rang": rang,
-                "type": meta.get("type"),
-                "document_id": meta.get("document_id"),
-                "page": meta.get("page"),
-                "source": meta.get("source"),
-                "distance": distance,
-                "similarite": 1.0 - float(distance),
-                "texte": document,
-            }
-        )
+        ligne = {
+            "rang": rang,
+            "type": meta.get("type"),
+            "document_id": meta.get("document_id"),
+            "page": meta.get("page"),
+            "source": meta.get("source"),
+            "distance": distance,
+            "similarite": 1.0 - float(distance),
+            "texte": document,
+        }
+        if "fragment" in meta:
+            ligne["fragment"] = meta["fragment"]
+        lignes.append(ligne)
     return lignes
