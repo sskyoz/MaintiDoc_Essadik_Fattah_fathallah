@@ -10,6 +10,7 @@ Statuts : à faire / en cours / fait
 | 4 | Schémas, tableaux, scans et photos dans le corpus | 1 | Au moins 10 documents avec visuels | à faire |
 | 5 | Métadonnées par élément (document, version, page, élément, équipement, groupes) | 2 | Table PostgreSQL, payload Qdrant | à faire |
 | 6 | OCR local | 2 | Script d'OCR, PDF scannés indexés | à faire |
+| 6b | Extraction texte/images (ingestion partielle) | 2 | extraire_document, aperçu | fait |
 | 7 | Recherche texte et image, fusion RRF | 3 | Tests de recherche, ablation | à faire |
 | 8 | Filtrage des accès avant récupération et à l'affichage | 3 | Tests d'accès entre groupes | à faire |
 | 9 | Citations pointant vers des pages et figures réellement récupérées | 4 | Vérificateur de citations | à faire |
